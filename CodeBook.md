@@ -9,9 +9,21 @@ Here, 70% of the volunteers was selected for generating the training data and 30
 - 'subject': lists the subject id of 30 volunteers. 
 Its range is from 1 to 30
 
-- The rest 561 varibles indicated 561 features that obtained by 
-calculating variables from the time and frequency domain. 
-See 'features_info.txt' for more details.
+- The rest varibles indicated features that obtained by 
+calculating variables from the time and frequency domain and  are
+on the mean and standard deviation. 
+
+    - 'time' indicates the time domain signals derived in time
+    - 'frequency' indicates the frequency domain signals transformed with a Fast Fourier Transform (FFT)
+    - 'BodyAcc' stands for body linear acceleration 
+    - 'GravityAcc' stands for gravity linear acceleration
+    - 'BodyGyro' stands for angular velocity
+    - 'Jerk' stands for Jerk signals
+    - 'Mag' stands for the magnitude of these three-dimensional signals
+    - 'XYZ' stands for 3 dimensions
+    - 'mean' indicates that the variables were estimated from mean values of the signals
+    - 'std' indicates that the variables were estimated from standard deviation of the signals
+See './UCI HAR Dataset/features_info.txt' for more details.
 
 Note: Variables of features are normalized and bounded within [-1,1].
 
@@ -81,6 +93,3 @@ with 'rbind' function
 ## 3 Data
 
 - 'summarisedata': a independent tidy data set with the average of each variable for each activity and each subject.
-
-- 'finaldata': a tidy data set with measurements on the mean and standard deviation, 
-including all subjects, activities and datasets.
