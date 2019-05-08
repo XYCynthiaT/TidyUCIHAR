@@ -1,15 +1,15 @@
 ## 1 Variables
 
--'activity': lists 6 activity names
+- 'activity': lists 6 activity names
 
--'set': indicates which dataset was partitioned into.
+- 'set': indicates which dataset was partitioned into.
 It can be either training set or test set.
 Here, 70% of the volunteers was selected for generating the training data and 30% the test data
 
--'subject': lists the subject id of 30 volunteers. 
+- 'subject': lists the subject id of 30 volunteers. 
 Its range is from 1 to 30
 
--The rest 561 varibles indicated 561 features that obtained by 
+- The rest 561 varibles indicated 561 features that obtained by 
 calculating variables from the time and frequency domain. 
 See 'features_info.txt' for more details.
 
@@ -19,7 +19,7 @@ Note: Variables of features are normalized and bounded within [-1,1].
 
 ### 2.1: Merges the training and the test sets to create one data set.
 
--2.1.1 Import 'features.txt' and store the list of all 561 features in an object
+- 2.1.1 Import 'features.txt' and store the list of all 561 features in an object
 called 'features'
 
 - 2.1.2 Import all files under 'train' directory, including: 
@@ -27,17 +27,17 @@ called 'features'
 label 'StringAsFactor = FALSE', and stored them in objects
 called 'trainsubject', 'trainset', 'trainlabel' respectively
 
--2.1.3 Merge training label ('trainlabel') and training set ('trainset') into 
+- 2.1.3 Merge training label ('trainlabel') and training set ('trainset') into 
 a big dataset called 'train' by col,using 'cbind()'. 
 Also, adding a column 'set' indicated the train set
 
--2.1.4 Edit the column names of 'train' with "set", "label", "subject", 
+- 2.1.4 Edit the column names of 'train' with "set", "label", "subject", 
 and features names('features')
 
--2.1.5 repeat 2.1.2 - 2.1.4 under the 'test' directory and get a big dataset
+- 2.1.5 repeat 2.1.2 - 2.1.4 under the 'test' directory and get a big dataset
 called 'test'
 
--2.1.6 Merge 'train' and 'test' dataset into a complete dataset called 'bothset'
+- 2.1.6 Merge 'train' and 'test' dataset into a complete dataset called 'bothset'
 with 'rbind' function
 
 ### 2.2 Extracts only the measurements on the mean and standard deviation for each measurement.
