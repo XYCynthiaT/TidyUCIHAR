@@ -1,0 +1,97 @@
+
+# Step 1-----------------------------------------------------------------------
+
+# 1. Merges the training and the test sets to create one data set.
+## training 70% volunteers (21), data 30% volunteers (9)
+
+## import 'features.txt': List of all features. 561 features/window
+features <- read.table('./UCI HAR Dataset/features.txt', stringsAsFactors = FALSE)
+
+## build a directory for 'train'
+traindir <- paste0("./UCI HAR Dataset/train/", list.files("./UCI HAR Dataset/train")[2:4])
+## [1-3]"subject_train.txt"  "X_train.txt"  "y_train.txt" 
+
+## import training set, 561 features are denoted as 561 vars, 7352 obs intotal
+trainset <- read.table(traindir[2], stringsAsFactors = FALSE)
+## import training labels, 1-6 label groups (6 activities), 7352 obs in total
+trainlabel <- read.table(traindir[3], stringsAsFactors = FALSE)
+## import 'subject_test': 
+# Each row identifies the subject who performed the activity for each window sample.
+# 21 in train group
+trainsubject <- read.table(traindir[1], stringsAsFactors = FALSE)
+
+## Merge training label and training set by col, cbind
+## 1 subject_id + 1 label + 561 features, 7352 obs
+train <- cbind(trainsubject, trainlabel, trainset)
+
+## add a column indication the train/test set
+train <- cbind(rep("train", nrow(train)), train)
+
+## add column names using features('features.txt')
+names(train) <- c("set", "subject", "label", features$V2)
+
+
+
+## build a directory for 'test'
+testdir <- paste0("./UCI HAR Dataset/test/", list.files("./UCI HAR Dataset/test")[2:4])
+## [1-3]"./test/subject_test.txt" "./test/X_test.txt"  "./test/y_test.txt" 
+
+## import test set, 561 features are denoted as 561 vars, 2947 obs intotal
+testset <- read.table(testdir[2], stringsAsFactors = FALSE)
+## import test labels, 1-6 label groups(6 activities), 2947 obs in total
+testlabel <- read.table(testdir[3], stringsAsFactors = FALSE)
+## import 'subject_test': 
+# Each row identifies the subject who performed the activity for each window sample.
+# 9 in test group
+testsubject <- read.table(testdir[1], stringsAsFactors = FALSE)
+
+## Merge training label and training set by col, cbind
+## 1 subject_id + 1 label + 561 features, 2947 obs
+test <- cbind(testsubject, testlabel, testset)
+
+## add a column indication the train/test set
+test <- cbind(rep("test", nrow(test)), test)
+
+## add column names using features('features.txt')
+names(test) <- c("set", "subject", "label", features$V2)
+
+## Merge train and test set
+bothset <- rbind(train, test)
+
+
+
+# Step 2 ------------------------------------------------------------------
+
+# 2. Extracts only the measurements on the mean and standard deviation for each measurement.
+vars <- names(bothset)
+measurement <- grep("mean|std", vars)
+selectdata <- bothset[, c(1, 2, 3, measurement)]
+
+# Step 3 ------------------------------------------------------------------
+
+# 3. Uses descriptive activity names to name the activities in the data set
+## import 'activity_labels.txt': list all activity names(6).
+activitylabels <- read.table("./UCI HAR Dataset/activity_labels.txt")
+names(activitylabels) <- c("label", "activity")
+finaldata <- merge(activitylabels, selectdata, by = "label", all = TRUE)
+finaldata <- finaldata[, -1]
+
+# Step 4 ------------------------------------------------------------------
+
+# 4. Appropriately labels the data set with descriptive variable names.
+## remove "()' in the variable names
+names(finaldata) <- sub("\\(\\)", "", names(finaldata))
+names(finaldata) <- sub("^t", "time", names(finaldata))
+names(finaldata) <- sub("^f", "frequency", names(finaldata))
+
+# Step 5 ------------------------------------------------------------------
+
+# 5. From the data set in step 4, creates a second, independent tidy data 
+# set with the average of each variable for each activity and each subject.
+library(dplyr)
+summarisedata <- finaldata %>% 
+  select(-set) %>%
+  group_by(activity, subject) %>%
+  summarise_all(mean)
+
+write.table(summarisedata, "summarisedata.txt", row.name=FALSE)
