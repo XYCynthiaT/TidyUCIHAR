@@ -23,6 +23,8 @@ on the mean and standard deviation.
     - 'XYZ' stands for 3 dimensions
     - 'mean' indicates that the variables were estimated from mean values of the signals
     - 'std' indicates that the variables were estimated from standard deviation of the signals
+    - 'angle()' shows angles between to vectors
+
 See './UCI HAR Dataset/features_info.txt' for more details.
 
 Note: Variables of features are normalized and bounded within [-1,1].

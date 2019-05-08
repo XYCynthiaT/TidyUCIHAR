@@ -2,10 +2,10 @@
 # Step 1-----------------------------------------------------------------------
 
 # 1. Merges the training and the test sets to create one data set.
-## training 70% volunteers (21), data 30% volunteers (9)
-
 ## import 'features.txt': List of all features. 561 features/window
 features <- read.table('./UCI HAR Dataset/features.txt', stringsAsFactors = FALSE)
+
+# train set
 
 ## build a directory for 'train'
 traindir <- paste0("./UCI HAR Dataset/train/", list.files("./UCI HAR Dataset/train")[2:4])
@@ -17,7 +17,6 @@ trainset <- read.table(traindir[2], stringsAsFactors = FALSE)
 trainlabel <- read.table(traindir[3], stringsAsFactors = FALSE)
 ## import 'subject_test': 
 # Each row identifies the subject who performed the activity for each window sample.
-# 21 in train group
 trainsubject <- read.table(traindir[1], stringsAsFactors = FALSE)
 
 ## Merge training label and training set by col, cbind
@@ -30,7 +29,7 @@ train <- cbind(rep("train", nrow(train)), train)
 ## add column names using features('features.txt')
 names(train) <- c("set", "subject", "label", features$V2)
 
-
+# test set
 
 ## build a directory for 'test'
 testdir <- paste0("./UCI HAR Dataset/test/", list.files("./UCI HAR Dataset/test")[2:4])
@@ -42,7 +41,6 @@ testset <- read.table(testdir[2], stringsAsFactors = FALSE)
 testlabel <- read.table(testdir[3], stringsAsFactors = FALSE)
 ## import 'subject_test': 
 # Each row identifies the subject who performed the activity for each window sample.
-# 9 in test group
 testsubject <- read.table(testdir[1], stringsAsFactors = FALSE)
 
 ## Merge training label and training set by col, cbind
@@ -58,13 +56,11 @@ names(test) <- c("set", "subject", "label", features$V2)
 ## Merge train and test set
 bothset <- rbind(train, test)
 
-
-
 # Step 2 ------------------------------------------------------------------
 
 # 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 vars <- names(bothset)
-measurement <- grep("mean|std", vars)
+measurement <- grep("mean|std", vars, ignore.case = TRUE)
 selectdata <- bothset[, c(1, 2, 3, measurement)]
 
 # Step 3 ------------------------------------------------------------------
